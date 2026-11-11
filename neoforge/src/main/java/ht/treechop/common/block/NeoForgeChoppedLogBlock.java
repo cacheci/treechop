@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -68,13 +68,8 @@ public class NeoForgeChoppedLogBlock extends ChoppedLogBlock {
 
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        return getImitatedBlockState(level, pos).getCloneItemStack(target, level, pos, player);
-    }
-
-    @Override
-    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState blockState) {
-        return getImitatedBlockState(level, pos).getBlock().getCloneItemStack(level, pos, blockState);
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState blockState, boolean includeData, Player player) {
+        return getImitatedBlockState(level, pos).getCloneItemStack(pos, level, includeData, player);
     }
 
     @Override

@@ -4,6 +4,7 @@ import ht.treechop.api.TreeChopAPI;
 import ht.treechop.client.NeoForgeClientProxy;
 import ht.treechop.common.NeoForgePlatform;
 import ht.treechop.common.config.ConfigHandler;
+import ht.treechop.common.loot.TreeChopLootContextParams;
 import ht.treechop.common.NeoForgeRegistry;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.api.distmarker.Dist;
@@ -15,7 +16,6 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.NeoForgeConfig;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
@@ -29,12 +29,14 @@ public class TreeChopNeoForge extends TreeChop {
         platform = new NeoForgePlatform();
         api = new TreeChopNeoForgeAPI(TreeChop.MOD_ID);
 
-        container.registerConfig(ModConfig.Type.COMMON, ConfigHandler.COMMON_SPEC);
+        container.registerConfig(ModConfig.Type.LOCAL, ConfigHandler.COMMON_SPEC);
         container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 
         NeoForgeRegistry.Blocks.REGISTRY.register(modBus);
         NeoForgeRegistry.BlockEntities.REGISTRY.register(modBus);
         NeoForgeRegistry.LootConditionTypes.REGISTRY.register(modBus);
+
+        TreeChopLootContextParams.init();
 
         modBus.addListener(this::processIMC);
         modBus.addListener((ModConfigEvent.Reloading event) -> ConfigHandler.onReload());
@@ -42,7 +44,7 @@ public class TreeChopNeoForge extends TreeChop {
 
         NeoForge.EVENT_BUS.addListener((TagsUpdatedEvent event) -> ConfigHandler.updateTags());
 
-        if (FMLLoader.getDist() == Dist.CLIENT) {
+        if (net.neoforged.fml.loading.FMLEnvironment.getDist() == Dist.CLIENT) {
             NeoForgeClientProxy.init(modBus);
         }
 

@@ -15,7 +15,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = "treechop")
 public class NeoForgeServer extends Server {
     static {
         Server.instance = new NeoForgeServer();
@@ -28,7 +28,7 @@ public class NeoForgeServer extends Server {
 
     @Override
     public void broadcast(ServerLevel level, BlockPos pos, CustomPacketPayload payload) {
-        PacketDistributor.sendToPlayersTrackingChunk(level, new ChunkPos(pos), payload);
+        PacketDistributor.sendToPlayersTrackingChunk(level, ChunkPos.containing(pos), payload);
     }
 
     @Override

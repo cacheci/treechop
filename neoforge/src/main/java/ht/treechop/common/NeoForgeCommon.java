@@ -13,9 +13,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
 
-@EventBusSubscriber(modid = TreeChop.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = TreeChop.MOD_ID)
 public class NeoForgeCommon {
 
     @SubscribeEvent
@@ -24,7 +25,7 @@ public class NeoForgeCommon {
     }
 
     @SubscribeEvent
-    public static void onBreakEvent(BlockEvent.BreakEvent event) {
+    public static void onBreakEvent(BreakBlockEvent event) {
         if (event.isCanceled()
                 || !(event.getLevel() instanceof ServerLevel level)
                 || !(event.getPlayer() instanceof ServerPlayer agent)) {

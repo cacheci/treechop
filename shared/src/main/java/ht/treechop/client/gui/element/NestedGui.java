@@ -86,9 +86,12 @@ public abstract class NestedGui extends AbstractWidget implements ContainerEvent
     }
 
     @Override
-    public boolean mouseClicked(double x, double y, int button) {
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event, boolean doubleClick) {
+        double x = event.x();
+        double y = event.y();
+        int button = event.button();
         for(GuiEventListener guieventlistener : this.children()) {
-            if (guieventlistener.mouseClicked(x, y, button)) {
+            if (guieventlistener.mouseClicked(event, doubleClick)) {
                 this.setFocused(guieventlistener);
                 if (button == 0) {
                     this.setDragging(true);
@@ -102,9 +105,9 @@ public abstract class NestedGui extends AbstractWidget implements ContainerEvent
     }
 
     @Override
-    public boolean mouseReleased(double x, double y, int button) {
+    public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent event) {
         this.setDragging(false);
-        return this.getChildAt(x, y).filter((child) -> child.mouseReleased(x, y, button)).isPresent();
+        return this.getChildAt(event.x(), event.y()).filter((child) -> child.mouseReleased(event)).isPresent();
     }
 
     public void expand(int width) {}

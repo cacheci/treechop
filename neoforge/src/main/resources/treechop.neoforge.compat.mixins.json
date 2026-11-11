@@ -2,8 +2,7 @@
   "required": false,
   "minVersion": "0.8",
   "package": "ht.treechop.compat.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "refmap": "treechop.mixins.refmap.json",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
     "MultiMineMixin"
   ],

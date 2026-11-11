@@ -1,5 +1,5 @@
 plugins {
-    id "net.neoforged.moddev" version "2.0.77"
+    id "net.neoforged.moddev" version "2.0.148"
 }
 
 version = mod_version
@@ -18,11 +18,6 @@ processResources {
 
 neoForge {
     version = project.neo_version
-
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.minecraft_version
-    }
 
     runs {
         client {
@@ -69,7 +64,6 @@ configurations {
 }
 
 dependencies {
-    annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
     implementation "net.sf.jopt-simple:jopt-simple:5.0.4"
 
     implementation project(":shared")
@@ -78,16 +72,16 @@ dependencies {
 //    localRuntime "curse.maven:create-328085:4835191"
 
     // Compile against the API
-    compileOnly "mcp.mobius.waila:wthit-api:neo-12.5.1"
+    compileOnly "mcp.mobius.waila:wthit-api:neo-21.0.0"
 
     // Run against the full jar
 //    localRuntime "mcp.mobius.waila:wthit:neo-12.5.1"
 //    localRuntime "lol.bai:badpackets:neo-0.8.1"
 
-    compileOnly "curse.maven:jade-324717:5591256"
-    localRuntime "curse.maven:jade-324717:5591256"
+    compileOnly "maven.modrinth:nvQzSEkH:bzrrwapQ"
+    localRuntime "maven.modrinth:nvQzSEkH:bzrrwapQ"
 
-    compileOnly "curse.maven:the-one-probe-245211:5502323"
+    compileOnly "maven.modrinth:the-one-probe:4Sv5m0eH"
 //    localRuntime "curse.maven:the-one-probe-245211:5502323"
 
 //    compileOnly "curse.maven:rubidium-574856:4952685"
@@ -96,7 +90,7 @@ dependencies {
     compileOnly "curse.maven:multi-mine-227887:5733888"
 //    localRuntime "curse.maven:multi-mine-227887:5733888"
 
-    compileOnly "curse.maven:integrated-dynamics-236307:6250036"
+    compileOnly "maven.modrinth:integrated-dynamics:oyiGblrd"
 //    localRuntime "curse.maven:integrated-dynamics-236307:6250036"
 //    localRuntime "curse.maven:common-capabilities-247007:6173956"
 //    localRuntime "curse.maven:cyclops-core-232758:6230091"
@@ -109,7 +103,7 @@ dependencies {
 //    localRuntime "curse.maven:tropicraft-254794:4617294"
 //    localRuntime "curse.maven:mystics-biomes-397962:4677470"
 
-    compileOnly "curse.maven:project-mmo-353935:5425305" // https://github.com/Caltinor/Project-MMO-2.0
+    compileOnly "maven.modrinth:project-mmo:Qupc1dVc"
 //    localRuntime "curse.maven:project-mmo-353935:5425305"
 
 //    localRuntime "curse.maven:placebo-283644:6105436"
@@ -152,7 +146,7 @@ sourceSets.each {
     it.java.destinationDirectory = dir
 }
 
-tasks.withType(JavaCompile).configureEach {
+tasks.named("compileJava", JavaCompile) {
     source(project(":shared").sourceSets.main.allSource)
     source(project(":tuber").sourceSets.main.allSource)
 }

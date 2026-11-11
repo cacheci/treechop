@@ -12,11 +12,11 @@ public class BlockNeighbors {
     protected final BlockPos[] blocks;
 
     static public final BlockNeighbors UP = new BlockNeighbors(new BlockPos[]{
-            new BlockPos(Direction.UP.getNormal())
+            BlockPos.ZERO.above()
     });
 
     static public final BlockNeighbors DOWN = new BlockNeighbors(new BlockPos[]{
-            new BlockPos(Direction.DOWN.getNormal())
+            BlockPos.ZERO.below()
     });
 
     static public final BlockNeighbors HORIZONTAL_ADJACENTS = new BlockNeighbors(new BlockPos[]{

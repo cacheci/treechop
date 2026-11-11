@@ -17,7 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -262,14 +262,14 @@ public class ChopUtil {
         }
     }
 
-    public static BlockState getStrippedState(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+    public static BlockState getStrippedState(BlockGetter level, BlockPos pos, BlockState state) {
         return getStrippedState(level, pos, state, state);
     }
 
     /**
      * Only use for visual purposes, does not affect gameplay
      */
-    public static BlockState getStrippedState(BlockAndTintGetter level, BlockPos pos, BlockState state, BlockState fallback) {
+    public static BlockState getStrippedState(BlockGetter level, BlockPos pos, BlockState state, BlockState fallback) {
         BlockState strippedState = (AxeAccessor.isStripped(state.getBlock())) ? state : AxeAccessor.getStripped(state);
         if (strippedState == null) {
             strippedState = TreeChop.platform.getStrippedState(level, pos, state);

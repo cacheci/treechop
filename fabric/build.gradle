@@ -1,5 +1,6 @@
 plugins {
-    id "fabric-loom"
+    id "net.fabricmc.fabric-loom"
+    id "java-library"
 }
 
 version = mod_version
@@ -31,24 +32,21 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:$minecraft_version"
-    mappings loom.layered() {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-$minecraft_version:$parchment_mappings_version@zip")
-    }
-    modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:$fabric_api_version"
+    implementation "net.fabricmc:fabric-loader:$fabric_loader_version"
+    implementation "net.fabricmc.fabric-api:fabric-api:$fabric_api_version"
+    compileOnly "net.fabricmc.fabric-api:fabric-renderer-api-v1:17.0.17+79385d0b5d"
 
     implementation project(":shared")
     implementation project(":tuber")
 
-    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:$forgeconfigapiport_version"
-    modApi "com.terraformersmc:modmenu:11.0.3"
+    api "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:$forgeconfigapiport_version"
+    api "com.terraformersmc:modmenu:21.0.0"
 
-    modCompileOnly "mcp.mobius.waila:wthit-api:fabric-12.4.2"
-    modRuntimeOnly "mcp.mobius.waila:wthit:fabric-12.4.2"
-    modRuntimeOnly "lol.bai:badpackets:fabric-0.8.1"
+    compileOnly "mcp.mobius.waila:wthit-api:fabric-21.0.0"
+    runtimeOnly "mcp.mobius.waila:wthit:fabric-21.0.0"
+    runtimeOnly "lol.bai:badpackets:fabric-0.12.3"
 
-    modCompileOnly "curse.maven:jade-324717:5571122"
+    compileOnly "maven.modrinth:nvQzSEkH:SpZLbrxW"
 //    modRuntimeOnly "curse.maven:jade-324717:5571122"
 
 //    modRuntimeOnly "maven.modrinth:sodium:mc1.19.3-0.4.9" // Doesn't wanna work in IntelliJ
@@ -62,7 +60,7 @@ dependencies {
 //    modRuntimeOnly "curse.maven:bclib-495191:4677965"
 //    modRuntimeOnly "curse.maven:betterend-413596:4677967"
 
-    modCompileOnly "com.terraformersmc.terraform-api:terraform-wood-api-v1:10.0.0"
+    compileOnly "com.terraformersmc.terraform-api:terraform-wood-api-v1:19.0.0-alpha.1"
 
 }
 
@@ -76,9 +74,6 @@ processResources {
 }
 
 loom {
-    mixin {
-        defaultRefmapName.set("${mod_id}.mixins.refmap.json")
-    }
     runs {
         client {
             client()
@@ -95,7 +90,7 @@ loom {
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
+tasks.named("compileJava", JavaCompile) {
     source(project(":shared").sourceSets.main.allSource)
     source(project(":tuber").sourceSets.main.allSource)
 }

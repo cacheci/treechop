@@ -1,9 +1,8 @@
 package ht.treechop.client.gui.util;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 
 public enum Sprite {
     CHOP_INDICATOR(0, 0, 20, 20),
@@ -22,8 +21,8 @@ public enum Sprite {
     HIGHLIGHTED_PAGE_TWO(32, 100, 32, 20),
     ;
 
-    public static final ResourceLocation TEXTURE_PATH =
-            ResourceLocation.fromNamespaceAndPath("treechop", "textures/gui/widgets.png");
+    public static final Identifier TEXTURE_PATH =
+            Identifier.fromNamespaceAndPath("treechop", "textures/gui/widgets.png");
     public static final int TEXTURE_WIDTH = 64;
     public static final int TEXTURE_HEIGHT = 120;
 
@@ -39,28 +38,27 @@ public enum Sprite {
         this.height = height;
     }
 
-    public static void setRenderState(float alpha) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, Sprite.TEXTURE_PATH);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
-    }
-
-    public void blit(GuiGraphics gui, int x, int y) {
+    public void blit(GuiGraphicsExtractor gui, int x, int y) {
         blit(gui, x, y, width, height);
     }
 
-    public void blit(GuiGraphics gui, int x, int y, int width, int height) {
+    public void blit(GuiGraphicsExtractor gui, int x, int y, float alpha) {
+        blit(gui, x, y, width, height, false, alpha);
+    }
+
+    public void blit(GuiGraphicsExtractor gui, int x, int y, int width, int height) {
         blit(gui, x, y, width, height, false);
     }
 
-    public void blit(GuiGraphics gui, int x, int y, int width, int height, boolean mirror) {
+    public void blit(GuiGraphicsExtractor gui, int x, int y, int width, int height, boolean mirror) {
+        blit(gui, x, y, width, height, mirror, 1.0F);
+    }
+
+    public void blit(GuiGraphicsExtractor gui, int x, int y, int width, int height, boolean mirror, float alpha) {
         float u = mirror ? this.u + this.width : this.u;
         int uw = mirror ? -this.width : this.width;
-        gui.blit(TEXTURE_PATH, x, y, width, height, u, v, uw, this.height, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        int color = (Math.round(alpha * 255) << 24) | 0xFFFFFF;
+        gui.blit(RenderPipelines.GUI_TEXTURED, TEXTURE_PATH, x, y, u, v, width, height, uw, this.height, TEXTURE_WIDTH, TEXTURE_HEIGHT, color);
     }
 
 }

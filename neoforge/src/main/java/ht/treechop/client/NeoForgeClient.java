@@ -7,12 +7,13 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.lwjgl.glfw.GLFW;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = "treechop")
 public class NeoForgeClient extends Client {
     static {
         Client.instance = new NeoForgeClient();
@@ -30,7 +31,7 @@ public class NeoForgeClient extends Client {
 
     @Override
     public void sendToServer(CustomPacketPayload payload) {
-        PacketDistributor.sendToServer(payload);
+        ClientPacketDistributor.sendToServer(payload);
     }
 
     static class EventHandler {
@@ -40,13 +41,11 @@ public class NeoForgeClient extends Client {
         }
 
         @SubscribeEvent
-        public static void onKeyInput(InputEvent.Key event) {
-            if (event.getKey() != GLFW.GLFW_KEY_UNKNOWN) {
-                for (KeyBindings.ActionableKeyBinding keyBinding : KeyBindings.allKeyBindings) {
-                    if (event.getKey() == keyBinding.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
-                        keyBinding.onPress();
-                        return;
-                    }
+        public static void onKeyInput(ClientTickEvent.Post event) {
+            for (KeyBindings.ActionableKeyBinding keyBinding : KeyBindings.allKeyBindings) {
+                if (keyBinding.consumeClick()) {
+                    keyBinding.onPress();
+                    return;
                 }
             }
         }

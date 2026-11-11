@@ -51,7 +51,7 @@ public class SyncedChopData {
             Optional<Boolean> isSynced = getBoolean(tag, IS_SYNCED_KEY);
 
             SneakBehavior defaultSneakBehavior = ConfigHandler.defaultChopSettings.get().getSneakBehavior();
-            String sneakBehaviorId = (tag.contains(SNEAK_BEHAVIOR_KEY)) ? tag.getString(SNEAK_BEHAVIOR_KEY) : "";
+            String sneakBehaviorId = tag.getString(SNEAK_BEHAVIOR_KEY).orElse("");
             if (sneakBehaviorId.isEmpty()) {
                 settings.setSneakBehavior(defaultSneakBehavior);
             } else {
@@ -79,7 +79,7 @@ public class SyncedChopData {
 
     protected Optional<Boolean> getBoolean(CompoundTag CompoundTag, String key) {
         return (CompoundTag.contains(key))
-                ? Optional.of(CompoundTag.getBoolean(key))
+                ? CompoundTag.getBoolean(key)
                 : Optional.empty();
     }
 }
